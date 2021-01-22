@@ -5,16 +5,17 @@
   "author": "tonytamps",
   "license": "MIT",
   "repository": "tonytamps/builderio-templated-preview-url",
-  "main": "dist/index.js",
-  "module": "dist/index.modern.js",
+  "main": "dist/builderio-templated-preview-url.umd.js",
+  "module": "dist/builderio-templated-preview-url.es5.js",
+  "unpkg": "dist/builderio-templated-preview-url.system.js",
   "source": "src/index.tsx",
   "engines": {
     "node": ">=10"
   },
   "scripts": {
-    "build": "microbundle-crl --no-compress --format modern,cjs",
-    "start": "microbundle-crl watch --no-compress --format modern,cjs",
-    "prepare": "run-s build",
+    "prebuild": "rimraf dist",
+    "build": "tsc --module commonjs && webpack --mode production",
+    "start": "cross-env SERVE=true && webpack-dev-server --mode development",
     "test": "run-s test:unit test:lint test:build",
     "test:build": "run-s build",
     "test:lint": "eslint .",
@@ -27,6 +28,10 @@
     "react": "^16.0.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.7.0",
+    "@babel/preset-env": "^7.7.1",
+    "@babel/preset-react": "^7.7.0",
+    "@babel/preset-typescript": "^7.7.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -56,13 +61,20 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "^3.4.1",
-    "typescript": "^3.7.5"
+    "rimraf": "^2.6.2",
+    "source-map-loader": "^0.2.4",
+    "ts-loader": "^8.0.14",
+    "typescript": "^3.7.5",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
     "@builder.io/react": "^1.1.31",
+    "@builder.io/sdk": "^1.1.20",
     "mustache": "^4.1.0"
   }
 }
