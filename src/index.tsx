@@ -12,13 +12,10 @@ type Props = {
 
 async function waitForEditingContentModel(context: BuilderContext): Promise<boolean> {
   return new Promise((resolve) => {
-    resolve(!!context.designerState.editingContentModel)
-  }).then((editingContentModelExists) => {
-    if (!editingContentModelExists) {
-      return waitForEditingContentModel(context)
+    if (context.designerState.editingContentModel) {
+      return resolve(true)
     }
-
-    return true
+    setTimeout(() => waitForEditingContentModel(context), 200)
   })
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "builderio-templated-preview-url",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Allows the usage of template variables in the preview url of your model",
   "author": "tonytamps",
   "license": "MIT",
