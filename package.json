@@ -10,7 +10,7 @@
   "unpkg": "dist/builderio-templated-preview-url.system.js",
   "source": "src/index.tsx",
   "engines": {
-    "node": ">=10"
+    "node": ">=14"
   },
   "scripts": {
     "prebuild": "rimraf dist",
