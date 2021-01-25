@@ -13,16 +13,18 @@ type Props = {
 async function waitForEditingContentModel(context: BuilderContext): Promise<boolean> {
   return new Promise((resolve) => {
     if (context.designerState.editingContentModel) {
-      return resolve(true)
+      return resolve()
     }
-    setTimeout(() => waitForEditingContentModel(context), 200)
+    setTimeout(() => waitForEditingContentModel(context).then(resolve), 200)
   })
 }
 
 export const TemplatedPreviewUrl: React.FC<Props> = ({ context }) => {
   const [ready, setReady] = React.useState(false)
 
-  waitForEditingContentModel(context).then(() => setReady(true))
+  React.useEffect(() => {
+    waitForEditingContentModel(context).then(() => setReady(true))
+  }, [])
 
   React.useEffect(() => {
     if (!ready) {
@@ -40,6 +42,8 @@ export const TemplatedPreviewUrl: React.FC<Props> = ({ context }) => {
     const previewUrl = Mustache.render(preCompiled, view)
 
     if (preCompiled !== previewUrl) {
+      console.log(`Updating preview url: ${previewUrl}`)
+      editingContentModel.previewUrl = previewUrl
       updatePreviewUrl(previewUrl)
     }
   }, [ready])
