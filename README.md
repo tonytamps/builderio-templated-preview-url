@@ -6,24 +6,16 @@
 
 ## Install
 
-```bash
-npm install --save builderio-templated-preview-url
-```
+1. Go to Account > Plugins 
+2. Add a new plugin with the URL `https://unpkg.com/builderio-templated-preview-url`
+3. Save
+
 
 ## Usage
 
-```tsx
-import React, { Component } from 'react'
-
-import MyComponent from 'builderio-templated-preview-url'
-import 'builderio-templated-preview-url/dist/index.css'
-
-class Example extends Component {
-  render() {
-    return <MyComponent />
-  }
-}
-```
+1. Go to Model > Editing URL
+2. Enter a [mustache.js](https://github.com/janl/mustache.js/) template like `http://localhost:8080/{{targeting.locale.0}}{{{targeting.urlPath}}}`
+3. Save
 
 ## License
 
