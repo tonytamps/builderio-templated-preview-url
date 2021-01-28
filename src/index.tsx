@@ -21,9 +21,23 @@ async function waitForEditingContentModel(context: BuilderContext): Promise<bool
 
 export const TemplatedPreviewUrl: React.FC<Props> = ({ context }) => {
   const [ready, setReady] = React.useState(false)
+  const [targeting, setTargeting] = React.useState({})
 
   React.useEffect(() => {
     waitForEditingContentModel(context).then(() => setReady(true))
+
+    const intervalId = setInterval(() => {
+      const { editingContentModel } = context.designerState
+      const newTargeting = editingContentModel?.query
+        .toJSON()
+        .reduce((accum: any, q: any) => ({ ...accum, [q.property]: q.value }), {})
+
+      if (newTargeting) {
+        setTargeting(newTargeting)
+      }
+    }, 1000)
+
+    return () => clearInterval(intervalId)
   }, [])
 
   React.useEffect(() => {
@@ -32,21 +46,16 @@ export const TemplatedPreviewUrl: React.FC<Props> = ({ context }) => {
     }
 
     const { editingContentModel, editingModel } = context.designerState
-    const targeting = editingContentModel.query
-      .toJSON()
-      .reduce((accum: any, q: any) => ({ ...accum, [q.property]: q.value }), {})
-
-    const view = { targeting }
 
     const preCompiled = editingModel.examplePageUrl
-    const previewUrl = Mustache.render(preCompiled, view)
+    const previewUrl = Mustache.render(preCompiled, { targeting })
 
-    if (preCompiled !== previewUrl) {
+    if (preCompiled !== previewUrl && editingContentModel.previewUrl !== previewUrl) {
       console.log(`Updating preview url: ${previewUrl}`)
       editingContentModel.previewUrl = previewUrl
       updatePreviewUrl(previewUrl)
     }
-  }, [ready])
+  }, [ready, targeting])
 
   return null
 }
