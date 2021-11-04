@@ -41,7 +41,7 @@ export const TemplatedPreviewUrl: React.FC<Props> = ({ context }) => {
   }, [])
 
   React.useEffect(() => {
-    if (!ready) {
+    if (!ready || Object.keys(targeting).length <= 0) {
       return
     }
 
